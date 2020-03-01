@@ -27,12 +27,14 @@ public class MainActivity extends AppCompatActivity {
     public void calculate(View view) {
 
         errorPanel = findViewById(R.id.errorPanel);
-        EditText sourceString = (EditText) findViewById(R.id.sourceString);
-        TextView resultString = (TextView) findViewById(R.id.resultString);
+        EditText sourceText = (EditText) findViewById(R.id.sourceText);
+        TextView resultText = (TextView) findViewById(R.id.resultText);
         TextView errorString = (TextView) findViewById(R.id.errorString);
 
+        String sourceString = sourceText.getText().toString();
+
         // Проверяем есть ли в строке хоть один символ
-        if ( sourceString.getText().toString().length() > 0 ) {
+        if ( sourceString.length() > 0 ) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Проверяем строку на недопустимые символы
-        if ( Calculator.symbolsCheck( sourceString.getText().toString() )) {
+        if ( Calculator.symbolsCheck( sourceString )) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
@@ -49,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Проверяем строку на корректыне операнды
+        if ( Calculator.operndCheck( sourceString )) {
+            errorPanel.setVisibility(View.GONE);
+        } else {
+            errorPanel.setVisibility(View.VISIBLE);
+            errorString.setText(R.string.bad_operand);
+            return;
+        }
 
 
 

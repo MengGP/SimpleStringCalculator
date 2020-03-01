@@ -4,9 +4,10 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/sourceString"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/sourceText"
+        android:hint="@string/enter_expression_hint"
+        style="@style/editExpressionStyle"
+        />
 
     <include
         android:id="@+id/errorPanel"
@@ -15,14 +16,13 @@
 
     <Button
         android:id="@+id/btnCalculate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Рассчитать"
+        style="@style/buttonStyle"
+        android:text="@string/calculate"
         android:onClick="calculate"
         />
 
     <TextView
-        android:id="@+id/resultString"
+        android:id="@+id/resultText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
