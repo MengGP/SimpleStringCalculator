@@ -8,5 +8,6 @@
     <string name="illegal_symbol_error">В строке содержатся недопустимые символы.</string>
     <string name="bad_operand">Некорректные операнды в строке.</string>
     <string name="bad_bracket">Несогласованные скобки в выражении.</string>
+    <string name="bad_operator">Неверно расставлены операторы в выражении.</string>
 
 </resources>

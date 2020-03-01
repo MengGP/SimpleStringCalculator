@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Проверяем строку на недопустимые символы
-        if ( Calculator.symbolsCheck( sourceString )) {
+        if ( StringHandler.symbolsCheck( sourceString )) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Проверяем строку на корректыне операнды
-        if ( Calculator.operandCheck( sourceString )) {
+        if ( StringHandler.operandCheck( sourceString )) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
@@ -61,13 +61,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Проверяем скобки
-        if ( Calculator.bracketCheck( sourceString ) ) {
+        if ( StringHandler.bracketCheck( sourceString ) ) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
             errorString.setText(R.string.bad_bracket);
             return;
         }
+
+        // Проверяем операторы
+        if ( StringHandler.operatorCheck( sourceString ) ) {
+            errorPanel.setVisibility(View.GONE);
+        } else {
+            errorPanel.setVisibility(View.VISIBLE);
+            errorString.setText(R.string.bad_operator);
+            return;
+        }
+
+        resultText.setText("GOOD EXPRESSION!");
 
 
 
