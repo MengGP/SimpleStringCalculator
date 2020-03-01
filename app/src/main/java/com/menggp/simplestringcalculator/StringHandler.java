@@ -12,6 +12,22 @@ public class StringHandler {
     private String sourceStr;
     private ArrayList<String> parsedStringList;
 
+    public StringHandler(String sourceStr) {
+        this.sourceStr = sourceStr;
+
+        // исключаем из исходной строки
+        // Удаляем из строки символы "Space" и "Enter"
+        char chSpace = 32;
+        char chEnter = 10;
+        sourceStr = sourceStr.replaceAll(Character.toString(chSpace), "");
+        sourceStr = sourceStr.replaceAll(Character.toString(chEnter),"");
+
+    } // end_constructor
+
+    public ArrayList<String> getParsedStringList() {
+        return parsedStringList;
+    } // end_getter
+
     // метод проводит комплексную сиснетаксическую проверку строки и возвращеет код ошибки
     public static int complexCheck(String str) {
         /*
@@ -83,19 +99,14 @@ public class StringHandler {
 
         char[] charArray = str.toCharArray();
 
-        // проверка 1 - наличие дробной части после разделителья
-        outer:
+        // проверка 1 - наличие дробной части после разделителя
         for (int i=0; i<charArray.length; i++) {
             if ( ( charArray[i] == 44) || ( charArray[i] == 46) ) {
-                for (int j=48; j<=57; j++) {
-                    try {
-                        if (charArray[i+1] == j) continue outer;
-                    } catch (ArrayIndexOutOfBoundsException ex) {
-                       // для случая если разделитель стоит в конце строки
-                       return false;
-                    }
+                try {
+                    if ( !Character.isDigit(charArray[i+1]) ) return false;
+                } catch(ArrayIndexOutOfBoundsException ex) {
+                    return false; // для случая если разделитель стоит в конце строки
                 }
-                return false;
             }
         } // end_outer_for
 
@@ -104,17 +115,9 @@ public class StringHandler {
         outer:
         for (int i=0; i<charArray.length; i++) {
             if ( delimiterCnt > 1 ) return false;
-
-            if ( ( charArray[i] == 44) || ( charArray[i] == 46) ) {
-                delimiterCnt++;
-                continue;
-            }
-
-            for (int j=48; j<=57; j++) {
-                if ( charArray[i] == j ) continue outer;
-            }
-
-            delimiterCnt = 0;
+            else if ( ( charArray[i] == 44) || ( charArray[i] == 46) ) delimiterCnt++;
+            else if ( Character.isDigit(charArray[i]) ) continue;
+            else delimiterCnt = 0;
         }  // end_outer_for
 
         return true;
@@ -167,17 +170,14 @@ public class StringHandler {
 
         char[] charArray = str.toCharArray();
 
-        outer:
         for (int i=0; i<charArray.length; i++) {
             // проверка оператора для которого допустимы унарные операции: "-"
             if ( charArray[i] == 45 ) {
                 try {
                     if ((charArray[i+1] == 44) || (charArray[i+1] == 46) || (charArray[i+1] == 40))
                         continue;   // дробное число начиная со знака разделителя или скобка
-                    for (int j = 48; j <= 57; j++) {
-                        if (charArray[i+1] == j) continue outer;
-                    }
-                    return false;
+                    else if ( Character.isDigit(charArray[i+1]) ) continue;
+                    else return false;
                 } catch (ArrayIndexOutOfBoundsException ex ) {
                     return false;   // если после оператора строка заканчивается
                 }
@@ -192,27 +192,13 @@ public class StringHandler {
                     boolean symbolAfter = false;
                     // проееряем предыдущий символ
                     if ( charArray[i-1] == 41 ) symbolBefore = true;
-                    else {
-                        for (int j = 48; j <= 57; j++) {
-                            if ( charArray[i-1] == j ){
-                                symbolBefore = true;
-                                break;
-                            }
-                        }
-                    }
+                    else if ( Character.isDigit(charArray[i-1]) ) symbolBefore = true;
                     // проверяем следующий символ
                     if ( (charArray[i+1] == 40) || (charArray[i+1] == 44) || (charArray[i+1] == 46) ) symbolAfter = true;
-                    else {
-                        for (int j = 48; j <= 57; j++) {
-                            if ( charArray[i+1] == j ){
-                                symbolAfter = true;
-                                break;
-                            }
-                        }
-                    }
+                    else if ( Character.isDigit(charArray[i+1]) ) symbolAfter = true;
+
                     // получаем итог
                     if ( !symbolBefore || !symbolAfter ) return false;
-
                 } catch (ArrayIndexOutOfBoundsException ex ) {
                     return false; // если отсутствует символ перед или после оператора
                 }
@@ -240,14 +226,7 @@ public class StringHandler {
                     // для символа "=" ПЕРЕД могут находится символы: > <
                     else if ( (charArray[i]==61) && (charArray[i-1]==60 || charArray[i-1]==62) ) symbolBefore=true;
                     // для всех частей тернарного оператора - число
-                    else {
-                        for (int j = 48; j <= 57; j++) {
-                            if ( charArray[i-1] == j ){
-                                symbolBefore = true;
-                                break;
-                            }
-                        }
-                    }
+                    else if ( Character.isDigit(charArray[i-1]) ) symbolBefore = true;
 
                     // проверяем символ ПОСЛЕ
                     // для всех ПОСЛЕ могут находиться символы: - . , (
@@ -255,14 +234,7 @@ public class StringHandler {
                     // для символов ">" и "<" ПОСЛЕ могут находится символ: =
                     else if ( (charArray[i]==60 || charArray[i]==62) && (charArray[i+1]==61) ) symbolAfter=true;
                     // для всех частей тернарного оператора - число
-                    else {
-                        for (int j = 48; j <= 57; j++) {
-                            if ( charArray[i+1] == j ){
-                                symbolAfter = true;
-                                break;
-                            }
-                        }
-                    }
+                    else if ( Character.isDigit(charArray[i+1]) ) symbolAfter = true;
 
                     // получаем итог
                     if ( !symbolBefore || !symbolAfter ) return false;
@@ -271,11 +243,11 @@ public class StringHandler {
                 }
             }
 
-        } // end_outer_for
-
+        }
 
         return true;
     } // end_method
 
+    // метод проверяет является ли символ числом
 
 } // end_class
