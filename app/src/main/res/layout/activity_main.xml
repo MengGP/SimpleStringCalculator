@@ -4,24 +4,28 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/expressionText"
+        android:id="@+id/sourceString"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <include
+        android:id="@+id/errorPanel"
+        layout="@layout/error_panel"
+        />
+
     <Button
+        android:id="@+id/btnCalculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Рассчитать"
-        android:onClick="btnCalculate"
+        android:onClick="calculate"
         />
 
-
     <TextView
-        android:id="@+id/resultText"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
-
-
+        android:id="@+id/resultString"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 
 

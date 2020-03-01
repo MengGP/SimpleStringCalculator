@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">SimpleStringCalculator</string>
+    <string name="app_name">Простой строковый калькулятор</string>
+
+    <string name="zero_lenght_string">Строка пуста, введите выражение.</string>
+    <string name="illegal_symbol_error">В строке содержатся недопустимые символы.</string>
+
 </resources>
