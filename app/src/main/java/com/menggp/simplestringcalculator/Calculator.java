@@ -44,7 +44,7 @@ public class Calculator {
     } // end_method
 
     // метод проверяет операнды в строке (наличие дробной части после разделителя, единственный разделитель на целую и дробную часть)
-    public static boolean operndCheck(String str) {
+    public static boolean operandCheck(String str) {
         /*
             Первая проверка - наличие дробной части после разделителя
                 - после знака разделителя должно быть число, проверяем по ASCII коду
@@ -88,6 +88,24 @@ public class Calculator {
 
             delimiterCnt = 0;
         }  // end_outer_for
+
+        return true;
+    } // end_method
+
+    // метод проверяет корректность расстановки скобок - согласованность открытых и закрытых скобок
+    public static boolean bracketCheck(String str) {
+        /*
+            ( = 40 (ASCII)
+            ) = 41 (ASCII)
+         */
+
+        int bktPairCounter = 0;
+        for (char iter : str.toCharArray() ) {
+            if ( (bktPairCounter < 1) && (iter == 41) ) return false;
+            if ( iter == 40 ) bktPairCounter++;
+            else if ( iter == 41 ) bktPairCounter--;
+        }
+        if ( bktPairCounter > 0 ) return false;
 
         return true;
     } // end_method

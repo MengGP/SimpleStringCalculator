@@ -6,6 +6,7 @@
 
     <string name="zero_lenght_string">Строка пуста, введите выражение.</string>
     <string name="illegal_symbol_error">В строке содержатся недопустимые символы.</string>
-    <string name="bad_operand">Некорректные операнды в строке</string>
+    <string name="bad_operand">Некорректные операнды в строке.</string>
+    <string name="bad_bracket">Несогласованные скобки в выражении.</string>
 
 </resources>

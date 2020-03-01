@@ -52,11 +52,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Проверяем строку на корректыне операнды
-        if ( Calculator.operndCheck( sourceString )) {
+        if ( Calculator.operandCheck( sourceString )) {
             errorPanel.setVisibility(View.GONE);
         } else {
             errorPanel.setVisibility(View.VISIBLE);
             errorString.setText(R.string.bad_operand);
+            return;
+        }
+
+        // Проверяем скобки
+        if ( Calculator.bracketCheck( sourceString ) ) {
+            errorPanel.setVisibility(View.GONE);
+        } else {
+            errorPanel.setVisibility(View.VISIBLE);
+            errorString.setText(R.string.bad_bracket);
             return;
         }
 
