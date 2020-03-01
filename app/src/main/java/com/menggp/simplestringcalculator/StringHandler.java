@@ -12,8 +12,34 @@ public class StringHandler {
     private String sourceStr;
     private ArrayList<String> parsedStringList;
 
+    // метод проводит комплексную сиснетаксическую проверку строки и возвращеет код ошибки
+    public static int complexCheck(String str) {
+        /*
+            -1 - нет ошибок
+            1 - пустая строка
+            2 - недопустимые сомволы
+            3 - некорректыне операнды
+            4 - несогласованные скобки
+            5 - некорректно расставлены операторы
+         */
+
+        if ( !zeroLenghtCheck( str ) )   return 1;
+        if ( !symbolsCheck( str ) )      return 2;
+        if ( !operandCheck( str ) )      return 3;
+        if ( !bracketCheck( str ) )      return 4;
+        if ( !operatorCheck( str ) )     return 5;
+
+        return -1;
+    } // end_method
+
+    // метод проверяет длину строки
+    private static boolean zeroLenghtCheck(String str) {
+        if ( str.length() < 1 ) return false;
+        return true;
+    } // end_method
+
     // метод проверяет исходную строку на недопустимые сымволы
-    public static boolean symbolsCheck(String str) {
+    private static boolean symbolsCheck(String str) {
         /* Список допустимых символов:
             Числа: 0 1 2 3 4 5 6 7 8 9
             Знаки разделени целой и дробной части: , .
@@ -45,7 +71,7 @@ public class StringHandler {
     } // end_method
 
     // метод проверяет операнды в строке (наличие дробной части после разделителя, единственный разделитель на целую и дробную часть)
-    public static boolean operandCheck(String str) {
+    private static boolean operandCheck(String str) {
         /*
             Первая проверка - наличие дробной части после разделителя
                 - после знака разделителя должно быть число, проверяем по ASCII коду
@@ -95,7 +121,7 @@ public class StringHandler {
     } // end_method
 
     // метод проверяет корректность расстановки скобок - согласованность открытых и закрытых скобок
-    public static boolean bracketCheck(String str) {
+    private static boolean bracketCheck(String str) {
         /*
             ( = 40 (ASCII)
             ) = 41 (ASCII)
@@ -113,7 +139,7 @@ public class StringHandler {
     } // end_method
 
     // метод проверяет расстановку операторов - простая синтаксическая проверка
-    public static boolean operatorCheck(String str) {
+    private static boolean operatorCheck(String str) {
         /*
           ASCII:
             - = 45          - унарный или бинарный оператор
