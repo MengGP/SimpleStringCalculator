@@ -34,6 +34,16 @@
         <item name="android:padding">16dp</item>
     </style>
 
+    <!-- result text style -->
+    <style name="resultExpressionStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:background">@color/colorResultBackground</item>
+        <item name="android:gravity">right</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
     <!-- button style -->
     <style name="buttonStyle">
         <item name="android:layout_width">match_parent</item>

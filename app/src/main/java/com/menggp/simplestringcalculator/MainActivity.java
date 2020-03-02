@@ -63,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 errorPanel.setVisibility(View.GONE);
         } // end-switch
 
+
         try {
             PolishCalc calcResult = new PolishCalc( data );
-
+            resultText.setText( calcResult.getResult() );
         } catch ( PolishCalc.PolishCalcException ex ) {
             errorPanel.setVisibility(View.VISIBLE);
             errorString.setText(R.string.bad_general);
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        resultText.setText("GOOD EXPRESSION!");
+
+
 
 
 

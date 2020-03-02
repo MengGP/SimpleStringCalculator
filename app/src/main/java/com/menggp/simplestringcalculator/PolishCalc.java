@@ -14,16 +14,15 @@ import java.util.Stack;
 public class PolishCalc {
 
     private static final String LOG_TAG = "PolishCalc";
-//    private static Object PolishCalcException;
 
-    // Выбрасываемое исключение при ошибках Сортировочной станции и Стековой машины
+
+    // Выбрасываемые исключение при ошибках Сортировочной станции и Стековой машины
     static class PolishCalcException extends Exception {};          // общее исключение
     static class PolishCalcExceptionTernar extends Exception {};    // ошибка в тернарном операторе
 
 
     private StringHandler sourceData;
-    private boolean convertResult;
-    private float result;
+    private String result;
     private ArrayList<String> opzData;      // данные после обработки сортировочной станцией
 
     public PolishCalc(StringHandler sourceData) throws PolishCalcException, PolishCalcExceptionTernar {
@@ -31,18 +30,99 @@ public class PolishCalc {
 
         this.opzData = sortMachine( sourceData );
 
+        this.result = stackMachine( opzData );
 
-    }
+    } // end_constructor
 
     // Getters and Setters
-    public boolean getConvertResult() {
-        return convertResult;
-    }
-
-    public float getResult() {
+    public String getResult() {
         return result;
     }
     // --- end_getters_and_setters
+
+    // Стековая машина - расчет выражения в ОПЗ
+    private static String stackMachine(ArrayList<String> opz) throws PolishCalcException, PolishCalcExceptionTernar {
+        String result = "";
+        Stack<String> stack = new Stack<>();
+
+        float op1;         // операнды
+        float op2;
+        String op0="";       // результат логического выражения тернарного оператора
+        float currResult=0;  // результат текущей операции
+        for (String iter : opz) {
+            // если операнд - в стек
+            if ( isNumber(iter) ) stack.push( iter );
+            // бинарные операции
+            else if ( iter.equals("+") || iter.equals("-") || iter.equals("*") || iter.equals("/") ) {
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op2 = Float.parseFloat( stack.pop() );
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op1 = Float.parseFloat( stack.pop() );
+                switch (iter) {
+                    case "+":
+                        currResult = op1 + op2; break;
+                    case "-":
+                        currResult = op1 - op2; break;
+                    case "*":
+                        currResult = op1 * op2; break;
+                    case "/":
+                        currResult = op1 / op2; break;
+                }
+                stack.push( String.valueOf(currResult) );
+            }
+            // операции сравнения тернарного оператора
+            else if ( iter.equals(">") || iter.equals("<") || iter.equals(">=") || iter.equals("<=") ) {
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op2 = Float.parseFloat( stack.pop() );
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op1 = Float.parseFloat( stack.pop() );
+                switch (iter) {
+                    case ">":
+                        if (op1 > op2) op0="true";
+                        else op0="false";
+                        break;
+                    case "<":
+                        if (op1 < op2) op0="true";
+                        else op0="false";
+                        break;
+                    case ">=":
+                        if (op1 >= op2) op0="true";
+                        else op0="false";
+                        break;
+                    case "<=":
+                        if (op1 <= op2) op0="true";
+                        else op0="false";
+                        break;
+                }
+                stack.push(op0);
+            }
+            // выбор тернарного оператора
+            else if ( iter.equals(":") ) {
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op2 = Float.parseFloat( stack.pop() );
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                else if ( !isNumber(stack.peek()) ) throw new PolishCalcExceptionTernar();
+                op1 = Float.parseFloat( stack.pop() );
+                if ( stack.isEmpty() ) throw new PolishCalcException();
+                op0 = stack.pop();
+                if ( !op0.equals("true") && !op0.equals("false") ) throw new PolishCalcExceptionTernar();
+
+                if ( op0.equals("true")) stack.push( String.valueOf(op1));
+                else stack.push( String.valueOf(op2) );
+            }
+            else throw new PolishCalcException();           // если не один из ожидамых символов
+        }
+
+        if ( stack.isEmpty() ) throw new PolishCalcException();
+        result = stack.peek();
+        return result;
+    }
+
 
     // Сортировночная машина - преобразует данные в ОПЗ
     private static ArrayList<String> sortMachine(StringHandler data) throws PolishCalcException, PolishCalcExceptionTernar {
@@ -193,6 +273,7 @@ public class PolishCalc {
         /*  ASCII
                  , = 44
                 . = 46           */
+
         for (char iter : str.toCharArray() ) {
             if ( !Character.isDigit(iter) && !(iter==44) && !(iter==46) ) return false;
         }
