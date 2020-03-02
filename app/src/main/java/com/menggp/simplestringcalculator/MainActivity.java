@@ -1,8 +1,12 @@
 package com.menggp.simplestringcalculator;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -14,6 +18,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
+    private static final String SHOW_INFO_ACTIVITY = "com.menggp.SHOW_INFO_ACTIVITY";
 
     View errorPanel;
 
@@ -63,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                 errorPanel.setVisibility(View.GONE);
         } // end-switch
 
-
         try {
             PolishCalc calcResult = new PolishCalc( data );
             resultText.setText( calcResult.getResult() );
@@ -76,19 +80,28 @@ public class MainActivity extends AppCompatActivity {
             errorString.setText(R.string.bad_ternar);
             return;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     } // end_method
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0
+                ,1
+                ,0
+                ,"info")
+                .setIcon(R.drawable.inf_icon)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    } // end_method
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case 1:
+                Intent intentSettings = new Intent(SHOW_INFO_ACTIVITY);
+                startActivity(intentSettings);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    } // end_method
 } // end_class
