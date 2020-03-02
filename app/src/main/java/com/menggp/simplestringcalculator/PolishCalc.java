@@ -118,8 +118,10 @@ public class PolishCalc {
             else throw new PolishCalcException();           // если не один из ожидамых символов
         }
 
+        // после вычислений в стеке должен остаться один и только один элемент
         if ( stack.isEmpty() ) throw new PolishCalcException();
-        result = stack.peek();
+        result = stack.pop();
+        if ( !stack.isEmpty() ) throw new PolishCalcException();
         return result;
     }
 
