@@ -34,8 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         String sourceString = sourceText.getText().toString();
 
+        // Создаем объект исходных данные - в конструкторе вызываются проверки строки и разбор на токены
+        StringHandler data = new StringHandler(sourceString);
+
         // Проверяем введенную строку на синтаксическую корректность
-        int checkSrtResult = StringHandler.complexCheck( sourceString );
+        int checkSrtResult = data.getCheckResult();
         errorPanel.setVisibility(View.VISIBLE);
         switch (checkSrtResult) {
             case 1:
@@ -58,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
         } // end-switch
 
         resultText.setText("GOOD EXPRESSION!");
-
-
-
-
 
 
 

@@ -10,26 +10,57 @@ public class StringHandler {
     private static final String LOG_TAG = "StringHandler";
 
     private String sourceStr;
-    private ArrayList<String> parsedStringList;
+    private int checkResult;
+    private ArrayList<String> parsedDataList; // = new ArrayList<>();
+
 
     public StringHandler(String sourceStr) {
         this.sourceStr = sourceStr;
+        this.checkResult = complexCheck( sourceStr );
+        if ( checkResult == -1 )
+            this.parsedDataList = stringParser( sourceStr );
+    } // end_constructor
+
+    // Getters and Setters
+    public ArrayList<String> getParsedDataList() {
+        return parsedDataList;
+    }
+
+    public int getCheckResult() {
+        return checkResult;
+    }
+    // --- end_getters_and_setters
+
+    // метод разбирает строку на токены и возвращает в виде ArrayList<String>
+    private static ArrayList<String> stringParser(String str) {
+        ArrayList<String> resultData = new ArrayList<>();
 
         // исключаем из исходной строки
         // Удаляем из строки символы "Space" и "Enter"
         char chSpace = 32;
         char chEnter = 10;
-        sourceStr = sourceStr.replaceAll(Character.toString(chSpace), "");
-        sourceStr = sourceStr.replaceAll(Character.toString(chEnter),"");
+        str = str.replaceAll(Character.toString(chSpace), "");
+        str = str.replaceAll(Character.toString(chEnter),"");
 
-    } // end_constructor
+        String numStr = "";  // вспомогательная строка для разбора чилес
+        for (char iter : str.toCharArray()) {
+            if ( !Character.isDigit(iter) && !(iter==44) && !(iter==46) ) {
+                if ( !numStr.isEmpty() ) {
+                    resultData.add( numStr );
+                    numStr = "";
+                }
+                resultData.add( String.valueOf(iter) );
+            } else {
+                numStr = numStr + iter;
+            }
+        }
+        if ( !numStr.isEmpty() ) resultData.add( numStr );  // если в конце строки число - обрабатываем вне цикла
 
-    public ArrayList<String> getParsedStringList() {
-        return parsedStringList;
-    } // end_getter
+        return resultData;
+    } // end_method
 
     // метод проводит комплексную сиснетаксическую проверку строки и возвращеет код ошибки
-    public static int complexCheck(String str) {
+    private static int complexCheck(String str) {
         /*
             -1 - нет ошибок
             1 - пустая строка
