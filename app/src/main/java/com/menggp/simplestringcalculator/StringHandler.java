@@ -3,7 +3,12 @@ package com.menggp.simplestringcalculator;
 import android.util.Log;
 
 import java.util.ArrayList;
+/*
+    Класс реализует логику работы с исходной строкой
+        - синтаксические проверки строки на корректность выражения
+        - разбор строки на токены в виде массива строк
 
+ */
 public class StringHandler {
 
 

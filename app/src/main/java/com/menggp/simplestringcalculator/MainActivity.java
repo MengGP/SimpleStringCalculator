@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+/*
+   Класс - MainActivity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
@@ -60,7 +63,23 @@ public class MainActivity extends AppCompatActivity {
                 errorPanel.setVisibility(View.GONE);
         } // end-switch
 
+        try {
+            PolishCalc calcResult = new PolishCalc( data );
+
+        } catch ( PolishCalc.PolishCalcException ex ) {
+            errorPanel.setVisibility(View.VISIBLE);
+            errorString.setText(R.string.bad_general);
+            return;
+        } catch ( PolishCalc.PolishCalcExceptionTernar ex) {
+            errorPanel.setVisibility(View.VISIBLE);
+            errorString.setText(R.string.bad_ternar);
+            return;
+        }
+
         resultText.setText("GOOD EXPRESSION!");
+
+
+
 
 
 

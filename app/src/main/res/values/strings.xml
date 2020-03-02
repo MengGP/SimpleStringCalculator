@@ -9,5 +9,8 @@
     <string name="bad_operand">Некорректные операнды в строке.</string>
     <string name="bad_bracket">Несогласованные скобки в выражении.</string>
     <string name="bad_operator">Неверно расставлены операторы в выражении.</string>
+    <string name="bad_ternar">Ошибка в записи тернарного оператора.</string>
+    <string name="bad_general">Логическая ошибка в записи выражения.</string>
+
 
 </resources>
